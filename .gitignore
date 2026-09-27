@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+
+# Streamlit Secrets
+.streamlit/secrets.toml
+
+# Database & outputs
+database.db
+outputs/*.png
+outputs/SAR_Report_*.txt
