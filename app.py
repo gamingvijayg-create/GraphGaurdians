@@ -1,14 +1,14 @@
 """
-🛡️ GraphGuardians - Multi-Page Enterprise Agentic Fraud Ring Detection & Countermeasure Engine
+GraphGuardians - Multi-Page Enterprise Agentic Fraud Ring Detection & Countermeasure Engine
 
 Full Agentic Pipeline:
-- Step 0: Real SQLite User Authentication
-- Page 1: Guide & Input Dataset Upload Setup (Custom CSV file uploader + Schema detection + Data summary preview)
+- Step 0: Real SQLite Officer Authentication (3D Ring Portal)
+- Page 1: Ingestion & Dataset Setup (Custom CSV file uploader + Schema detection + Data summary preview)
 - Page 2: Dual 3D/2D Graph Topology + Multi-Agent Reasoning + Dynamic Account Freeze Controls
   - Top KPI Strip: Total Amount Scammed & Accounts To Freeze (Computed from user input dataset)
   - Clear Dual Graph Views: 3D Fiber-Optic Wire Connections + 2D High-Contrast Interactive Node-Edge Graph
-  - Agent Actions Panel: Freeze target accounts in the user's uploaded dataset, human override (Approve/Reverse), SAR downloads, CSV export
-- Page 3: About Team & SQLite Audit Trail Logs
+  - Agent Actions Panel: Target accounts freeze controls, human override audit trail, FinCEN SAR downloads, CSV export
+- Page 3: Team Architecture & SQLite Audit Trail Logs
 """
 
 import os
@@ -32,11 +32,11 @@ import db
 importlib.reload(db)  # Ensure fresh module reload
 
 # ---------------------------------------------------------------------------
-# STREAMLIT PAGE CONFIG & TVA SACRED TIMELINE STYLES
+# STREAMLIT PAGE CONFIG & HIGH-END ENTERPRISE STYLES
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="GraphGuardians - Agentic Fraud Intelligence",
-    page_icon="🛡️",
+    page_title="GraphGuardians - Enterprise Fraud Intelligence",
+    page_icon="https://svgsilh.com/svg/2793139.svg",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -44,112 +44,330 @@ st.set_page_config(
 st.markdown("""
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-    * {
+    .stApp {
+        background-color: #070a13;
+        color: #f1f5f9;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
-    .stApp {
-        background-color: #0c0a09;
-        color: #f5f5f4;
+    /* STREAMLIT FILE UPLOADER BUTTON FIX - REMOVE OVERLAPPING ICON TEXT */
+    [data-testid="stFileUploader"] button {
+        font-family: 'Share Tech Mono', monospace !important;
+        background: rgba(15, 23, 42, 0.9) !important;
+        border: 1px solid rgba(168, 85, 247, 0.4) !important;
+        color: #ffffff !important;
+        border-radius: 8px !important;
+        padding: 6px 14px !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+    [data-testid="stFileUploader"] button:hover {
+        border-color: #a855f7 !important;
+        box-shadow: 0 0 12px rgba(168, 85, 247, 0.4) !important;
+    }
+    /* Hide broken icon text node 'upload' */
+    [data-testid="stFileUploader"] button span:first-child,
+    [data-testid="stFileUploader"] button small:first-child {
+        font-size: 0px !important;
+        width: 0px !important;
+        height: 0px !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        display: none !important;
+    }
+    /* Ensure label text is clean, visible, and styled */
+    [data-testid="stFileUploader"] button span:last-child {
+        font-size: 0.88rem !important;
+        font-family: 'Share Tech Mono', monospace !important;
+        color: #ffffff !important;
+        visibility: visible !important;
+        display: inline-block !important;
+    }
+
+    /* GLOBAL HIGH-TECH TYPOGRAPHY & GLOW SYSTEM ACROSS ALL PAGES */
+    h1, h2, h3, h4, h5, h6,
+    .stButton > button,
+    .stSelectbox label,
+    .stTextInput label,
+    .stTextArea label,
+    .stNumberInput label,
+    .stRadio label,
+    .bank-title,
+    .bank-badge,
+    .login-portal-title,
+    .login-portal-sub,
+    .step-number,
+    .step-title,
+    .tva-kpi-label,
+    .tva-kpi-value,
+    .tier-badge,
+    .db-badge {
+        font-family: 'Share Tech Mono', monospace !important;
+        letter-spacing: 0.6px !important;
+    }
+
+    /* Ambient Futuristic Glow on All Headings Across Entire Website */
+    h1, h2, h3, h4, .bank-title, .login-portal-title {
+        text-shadow: 0 0 20px rgba(168, 85, 247, 0.45) !important;
+    }
+
+    /* Unified Sleek Inputs Across All Pages */
+    .stTextInput input, .stSelectbox select, .stTextArea textarea, .stNumberInput input {
+        font-family: 'Share Tech Mono', monospace !important;
+        background: rgba(15, 23, 42, 0.85) !important;
+        border: 1px solid rgba(168, 85, 247, 0.35) !important;
+        color: #ffffff !important;
+        border-radius: 10px !important;
+    }
+    .stTextInput input:focus, .stSelectbox select:focus {
+        border-color: #a855f7 !important;
+        box-shadow: 0 0 15px rgba(168, 85, 247, 0.5) !important;
+    }
+
+    /* Unified Sleek Buttons Across All Pages */
+    .stButton > button {
+        font-family: 'Share Tech Mono', monospace !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        font-weight: 700 !important;
+        border-radius: 10px !important;
+        transition: all 0.3s ease !important;
+    }
+    .stButton > button[kind="primary"] {
+        background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%) !important;
+        border: none !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 20px rgba(168, 85, 247, 0.45) !important;
+    }
+    .stButton > button[kind="primary"]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 30px rgba(168, 85, 247, 0.7) !important;
     }
 
     .bank-header {
-        background: linear-gradient(135deg, #1c1917, #292524);
-        border: 1px solid #d97706;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        border: 1px solid rgba(245, 158, 11, 0.4);
         border-radius: 12px;
-        padding: 16px 24px;
-        margin-bottom: 20px;
+        padding: 18px 26px;
+        margin-bottom: 22px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 0 20px rgba(217, 119, 6, 0.15);
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.45), 0 0 20px rgba(245, 158, 11, 0.12);
     }
     .bank-title {
-        font-size: 1.6rem;
+        font-size: 1.55rem;
         font-weight: 800;
         color: #f59e0b;
         margin: 0;
-        letter-spacing: -0.5px;
+        letter-spacing: -0.3px;
     }
     .bank-badge {
-        background-color: #292524;
-        color: #f59e0b;
+        background-color: #1e293b;
+        color: #38bdf8;
         padding: 6px 14px;
         border-radius: 8px;
-        border: 1px solid #78350f;
+        border: 1px solid #0284c7;
         font-family: 'Share Tech Mono', monospace !important;
-        font-size: 0.88rem;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .login-portal {
-        max-width: 440px;
-        margin: 40px auto;
-        background: #1c1917;
-        border: 1px solid #d97706;
-        border-radius: 16px;
-        padding: 36px;
-        box-shadow: 0 0 35px rgba(217, 119, 6, 0.25);
+    .login-fullscreen-wrapper {
+        position: relative !important;
+        z-index: 20 !important;
+        max-width: 480px !important;
+        margin: 40px auto 0 auto !important;
+        text-align: center;
     }
     .login-portal-title {
-        font-size: 2.1rem;
+        font-size: 2.4rem;
         font-weight: 800;
-        color: #f59e0b;
+        color: #a855f7;
         text-align: center;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
+        letter-spacing: -0.5px;
+        text-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
+        font-family: 'Share Tech Mono', monospace !important;
     }
     .login-portal-sub {
-        font-size: 0.88rem;
-        color: #a8a29e;
+        font-size: 0.82rem;
+        color: #94a3b8;
         text-align: center;
-        margin-bottom: 24px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-family: 'Share Tech Mono', monospace !important;
+    }
+
+    /* BORDER GLOW ANIMATED EFFECT FOR LOGIN PROFILE CARD */
+    @keyframes borderGlowSweep {
+        0% {
+            box-shadow: 
+                0 0 20px rgba(192, 132, 252, 0.5),
+                0 0 40px rgba(244, 114, 182, 0.3),
+                0 0 60px rgba(56, 189, 248, 0.2),
+                inset 0 0 15px rgba(192, 132, 252, 0.15),
+                0 20px 50px rgba(0, 0, 0, 0.9);
+        }
+        50% {
+            box-shadow: 
+                0 0 28px rgba(244, 114, 182, 0.6),
+                0 0 50px rgba(56, 189, 248, 0.35),
+                0 0 70px rgba(192, 132, 252, 0.25),
+                inset 0 0 20px rgba(244, 114, 182, 0.2),
+                0 20px 50px rgba(0, 0, 0, 0.9);
+        }
+        100% {
+            box-shadow: 
+                0 0 20px rgba(56, 189, 248, 0.5),
+                0 0 40px rgba(192, 132, 252, 0.3),
+                0 0 60px rgba(244, 114, 182, 0.2),
+                inset 0 0 15px rgba(56, 189, 248, 0.15),
+                0 20px 50px rgba(0, 0, 0, 0.9);
+        }
+    }
+
+    div[data-testid="stForm"] {
+        position: relative !important;
+        isolation: isolate !important;
+        border-radius: 28px !important;
+        background: #120F17 !important;
+        border: 2px solid transparent !important;
+        background-image: linear-gradient(#120F17, #120F17), linear-gradient(135deg, #c084fc 0%, #f472b6 50%, #38bdf8 100%) !important;
+        background-origin: border-box !important;
+        background-clip: padding-box, border-box !important;
+        animation: borderGlowSweep 4s infinite alternate ease-in-out !important;
+        padding: 32px 30px !important;
+        max-width: 440px !important;
+        margin: 30px auto 30px auto !important;
+        box-sizing: border-box !important;
+        transition: transform 0.3s ease !important;
+    }
+
+    div[data-testid="stForm"]:hover {
+        transform: translateY(-4px) !important;
+        box-shadow: 
+            0 0 35px rgba(192, 132, 252, 0.7),
+            0 0 65px rgba(244, 114, 182, 0.5),
+            0 0 95px rgba(56, 189, 248, 0.4),
+            inset 0 0 25px rgba(192, 132, 252, 0.25),
+            0 25px 60px rgba(0, 0, 0, 0.95) !important;
+    }
+    div[data-testid="stForm"] > div {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    div[data-testid="stForm"] [data-testid="stVerticalBlock"] {
+        gap: 12px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    div[data-testid="stForm"] .stMarkdown {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    div[data-testid="stForm"] h4 {
+        margin: 0 0 14px 0 !important;
+        padding: 0 !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        text-align: center !important;
+        text-shadow: 0 0 15px rgba(168, 85, 247, 0.6) !important;
+        font-size: 1.3rem !important;
+        font-family: 'Share Tech Mono', monospace !important;
+    }
+    div[data-testid="stForm"] label p {
+        color: #e2e8f0 !important;
+        font-weight: 600 !important;
+        font-size: 0.88rem !important;
+        margin-bottom: 4px !important;
+        font-family: 'Share Tech Mono', monospace !important;
+    }
+    div[data-testid="stForm"] input {
+        background: rgba(15, 23, 42, 0.85) !important;
+        border: 1px solid rgba(168, 85, 247, 0.35) !important;
+        color: #ffffff !important;
+        border-radius: 10px !important;
+        font-family: 'Share Tech Mono', monospace !important;
+    }
+    div[data-testid="stForm"] input:focus {
+        border-color: #a855f7 !important;
+        box-shadow: 0 0 15px rgba(168, 85, 247, 0.5) !important;
+    }
+    div[data-testid="stForm"] button[type="submit"] {
+        background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%) !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        letter-spacing: 0.5px !important;
+        box-shadow: 0 4px 20px rgba(168, 85, 247, 0.45) !important;
+        border-radius: 10px !important;
+        margin-top: 6px !important;
+        transition: all 0.3s ease !important;
+        font-family: 'Share Tech Mono', monospace !important;
+    }
+    div[data-testid="stForm"] button[type="submit"]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 30px rgba(168, 85, 247, 0.7) !important;
     }
 
     .guide-card {
-        background: #1c1917;
-        border: 1px solid #44403c;
+        background: #0f172a;
+        border: 1px solid #334155;
         border-radius: 12px;
         padding: 22px;
         margin-bottom: 16px;
+        transition: border-color 0.3s ease;
+    }
+    .guide-card:hover {
+        border-color: #f59e0b;
     }
     .step-number {
         font-family: 'Share Tech Mono', monospace !important;
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         font-weight: 700;
         color: #f59e0b;
         margin-bottom: 8px;
+        letter-spacing: 1px;
     }
     .step-title {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         font-weight: 700;
-        color: #f5f5f4;
+        color: #f8fafc;
         margin-bottom: 6px;
+        font-family: 'Share Tech Mono', monospace !important;
     }
     .step-desc {
-        font-size: 0.9rem;
-        color: #a8a29e;
-        line-height: 1.5;
+        font-size: 0.88rem;
+        color: #94a3b8;
+        line-height: 1.55;
     }
 
     .tva-kpi-row {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 16px;
-        margin-bottom: 20px;
+        margin-bottom: 22px;
     }
     .tva-kpi-card {
-        background: #1c1917;
-        border: 1px solid #44403c;
+        background: #0f172a;
+        border: 1px solid #334155;
         border-radius: 10px;
-        padding: 18px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
     .tva-kpi-label {
         font-family: 'Share Tech Mono', monospace !important;
         font-size: 0.78rem;
-        color: #a8a29e;
+        color: #94a3b8;
         text-transform: uppercase;
+        letter-spacing: 0.5px;
         margin-bottom: 6px;
     }
     .tva-kpi-value {
@@ -157,42 +375,196 @@ st.markdown("""
         font-weight: 800;
         color: #f59e0b;
         margin: 0;
+        font-family: 'Share Tech Mono', monospace !important;
     }
-    .tva-kpi-value.danger { color: #ef4444; }
+    .tva-kpi-value.danger { color: #f43f5e; }
 
     .tier-badge {
         padding: 4px 10px;
         border-radius: 6px;
         font-weight: 800;
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         font-family: 'Share Tech Mono', monospace !important;
+        letter-spacing: 0.5px;
     }
-    .tier-CRITICAL { background: #ef4444; color: #ffffff; }
+    .tier-CRITICAL { background: #f43f5e; color: #ffffff; }
     .tier-HIGH { background: #f97316; color: #ffffff; }
-    .tier-MEDIUM { background: #eab308; color: #0c0a09; }
+    .tier-MEDIUM { background: #eab308; color: #0f172a; }
     .tier-LOW { background: #10b981; color: #ffffff; }
 
     .agent-action-card {
-        background: #1c1917;
-        border: 1px solid #44403c;
+        background: #0f172a;
+        border: 1px solid #334155;
         border-radius: 10px;
-        padding: 16px;
-        margin-bottom: 14px;
+        padding: 18px;
+        margin-bottom: 16px;
     }
 
     .db-badge {
-        background: #064e3b;
+        background: rgba(16, 185, 129, 0.12);
         color: #34d399;
         border: 1px solid #059669;
-        padding: 6px 12px;
+        padding: 6px 14px;
         border-radius: 6px;
         font-family: 'Share Tech Mono', monospace !important;
-        font-size: 0.85rem;
-        margin-bottom: 16px;
+        font-size: 0.82rem;
+        margin-bottom: 18px;
         display: inline-block;
     }
 </style>
 """, unsafe_allow_html=True)
+
+# ---------------------------------------------------------------------------
+import streamlit.components.v1 as components
+
+# ---------------------------------------------------------------------------
+# 3D MAGIC RINGS SHADER COMPONENT FOR LOGIN PORTAL
+# ---------------------------------------------------------------------------
+def render_magic_rings_html(color="#A855F7", color_two="#3B82F6", height=500):
+    """Renders high-performance full-screen WebGL GLSL magic rings 3D concentric shader animation."""
+    html_code = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body, html {{ margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; background: transparent; }}
+        #canvas-container {{ width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; }}
+      </style>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    </head>
+    <body>
+      <div id="canvas-container"></div>
+      <script>
+        const vertexShader = `
+          void main() {{
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }}
+        `;
+
+        const fragmentShader = `
+          precision highp float;
+
+          uniform float uTime, uAttenuation, uLineThickness;
+          uniform float uBaseRadius, uRadiusStep, uScaleRate;
+          uniform float uOpacity, uNoiseAmount, uRotation, uRingGap;
+          uniform float uFadeIn, uFadeOut;
+          uniform float uMouseInfluence, uHoverAmount, uHoverScale, uParallax, uBurst;
+          uniform float uCoverageAlpha;
+          uniform vec2 uResolution, uMouse;
+          uniform vec3 uColor, uColorTwo;
+          uniform int uRingCount;
+
+          const float HP = 1.5707963;
+          const float CYCLE = 3.8;
+
+          float fade(float t) {{
+            return t < uFadeIn ? smoothstep(0.0, uFadeIn, t) : 1.0 - smoothstep(uFadeOut, CYCLE - 0.2, t);
+          }}
+
+          float ring(vec2 p, float ri, float cut, float t0, float px) {{
+            float t = mod(uTime + t0, CYCLE);
+            float r = ri + t / CYCLE * uScaleRate;
+            float d = abs(length(p) - r);
+            float a = atan(abs(p.y), abs(p.x)) / HP;
+            float th = max(1.0 - a, 0.5) * px * uLineThickness;
+            float h = (1.0 - smoothstep(th, th * 1.5, d)) + 1.0;
+            d += pow(cut * a, 3.0) * r;
+            return h * exp(-uAttenuation * d) * fade(t);
+          }}
+
+          void main() {{
+            float minRes = min(uResolution.x, uResolution.y);
+            float px = 1.0 / minRes;
+            vec2 p = (gl_FragCoord.xy - 0.5 * uResolution.xy) * px;
+            float cr = cos(uRotation), sr = sin(uRotation);
+            p = mat2(cr, -sr, sr, cr) * p;
+            p -= uMouse * uMouseInfluence;
+            float sc = mix(1.0, uHoverScale, uHoverAmount) + uBurst * 0.3;
+            p /= sc;
+            vec3 c = vec3(0.0);
+            float coverage = 0.0;
+            float rcf = max(float(uRingCount) - 1.0, 1.0);
+            for (int i = 0; i < 10; i++) {{
+              if (i >= uRingCount) break;
+              float fi = float(i);
+              vec2 pr = p - fi * uParallax * uMouse;
+              vec3 rc = mix(uColor, uColorTwo, fi / rcf);
+              float ringAmount = ring(pr, uBaseRadius + fi * uRadiusStep, pow(uRingGap, fi), i == 0 ? 0.0 : 2.8 * fi, px);
+              c = mix(c, rc, vec3(ringAmount));
+              coverage = max(coverage, ringAmount);
+            }}
+            c *= 1.25 + uBurst * 2.0;
+            float n = fract(sin(dot(gl_FragCoord.xy + uTime * 10.0, vec2(12.9898, 78.233))) * 43758.5453);
+            c += (n - 0.5) * uNoiseAmount;
+            float intensity = max(c.r, max(c.g, c.b));
+            vec3 emissiveColor = intensity > 0.0001 ? clamp(c / intensity, 0.0, 1.0) : vec3(0.0);
+            vec3 outputColor = mix(emissiveColor, clamp(c, 0.0, 1.0), uCoverageAlpha);
+            float outputAlpha = mix(intensity, coverage, uCoverageAlpha);
+            gl_FragColor = vec4(outputColor, clamp(outputAlpha * uOpacity, 0.0, 1.0));
+          }}
+        `;
+
+        const container = document.getElementById('canvas-container');
+        const renderer = new THREE.WebGLRenderer({{ alpha: true, antialias: true, powerPreference: "high-performance" }});
+        const dpr = Math.min(window.devicePixelRatio || 2, 2.5);
+        renderer.setPixelRatio(dpr);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5, 0.1, 10);
+        camera.position.z = 1;
+
+        const uniforms = {{
+          uTime: {{ value: 0 }},
+          uAttenuation: {{ value: 10.0 }},
+          uResolution: {{ value: new THREE.Vector2(window.innerWidth * dpr, window.innerHeight * dpr) }},
+          uColor: {{ value: new THREE.Color("{color}") }},
+          uColorTwo: {{ value: new THREE.Color("{color_two}") }},
+          uLineThickness: {{ value: 2.3 }},
+          uBaseRadius: {{ value: 0.18 }},
+          uRadiusStep: {{ value: 0.085 }},
+          uScaleRate: {{ value: 0.075 }},
+          uRingCount: {{ value: 8 }},
+          uOpacity: {{ value: 1.0 }},
+          uNoiseAmount: {{ value: 0.01 }},
+          uRotation: {{ value: 0.0 }},
+          uRingGap: {{ value: 1.4 }},
+          uFadeIn: {{ value: 0.6 }},
+          uFadeOut: {{ value: 0.4 }},
+          uMouse: {{ value: new THREE.Vector2(0, 0) }},
+          uMouseInfluence: {{ value: 0.15 }},
+          uHoverAmount: {{ value: 0 }},
+          uHoverScale: {{ value: 1.15 }},
+          uParallax: {{ value: 0.03 }},
+          uBurst: {{ value: 0 }},
+          uCoverageAlpha: {{ value: 0 }},
+        }};
+
+        const material = new THREE.ShaderMaterial({{ vertexShader, fragmentShader, uniforms, transparent: true }});
+        const quad = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material);
+        scene.add(quad);
+
+        let startT = performance.now();
+        function animate() {{
+          requestAnimationFrame(animate);
+          uniforms.uTime.value = (performance.now() - startT) * 0.001;
+          renderer.render(scene, camera);
+        }}
+        animate();
+
+        window.addEventListener('resize', () => {{
+          const w = window.innerWidth;
+          const h = window.innerHeight;
+          renderer.setSize(w, h);
+          uniforms.uResolution.value.set(w * dpr, h * dpr);
+        }});
+      </script>
+    </body>
+    </html>
+    """
+    components.html(html_code, height=height, scrolling=False)
+
 
 # ---------------------------------------------------------------------------
 # SESSION ROUTER INITIALIZATION
@@ -209,24 +581,24 @@ if "uploaded_df" not in st.session_state:
     st.session_state["uploaded_df"] = None
 
 # ---------------------------------------------------------------------------
-# STEP 0: REAL USER AUTHENTICATION GATE
+# STEP 0: REAL USER AUTHENTICATION GATE (MAGIC RINGS 3D PORTAL)
 # ---------------------------------------------------------------------------
 if not st.session_state["logged_in"]:
     st.markdown("""
-    <div class="login-portal">
-        <div class="login-portal-title">🛡️ GraphGuardians</div>
-        <div class="login-portal-sub">Agentic Fraud Operations Command Portal</div>
+    <div class="login-fullscreen-wrapper">
+        <div class="login-portal-title">GraphGuardians SOC</div>
+        <div class="login-portal-sub">Financial Intelligence & Countermeasure Portal</div>
     </div>
     """, unsafe_allow_html=True)
 
-    col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
-    with col_l2:
+    col_r1, col_r2, col_r3 = st.columns([1, 2.2, 1])
+    with col_r2:
         with st.form("real_auth_form"):
-            st.markdown("##### 🔑 Officer Authentication")
+            st.markdown("<h4>Officer Authentication</h4>", unsafe_allow_html=True)
             username_input = st.text_input("Username", value="admin")
             password_input = st.text_input("Password", type="password", value="admin123")
             
-            login_submit = st.form_submit_button("🔓 Sign In to SOC Portal", type="primary", use_container_width=True)
+            login_submit = st.form_submit_button("Authenticate Session", type="primary", use_container_width=True)
 
             if login_submit:
                 user_record = db.authenticate_user(username_input, password_input)
@@ -238,13 +610,14 @@ if not st.session_state["logged_in"]:
                     # Save login session
                     db.save_login(user_record["bank_name"], user_record["username"], user_record["officer_email"])
 
-                    st.success(f"Authenticated as {user_record['username']} ({user_record['role']})")
-                    time.sleep(0.5)
+                    st.success(f"Authenticated session: {user_record['username']} ({user_record['role']})")
+                    time.sleep(0.4)
                     st.rerun()
                 else:
-                    st.error("⚠️ Invalid username or password. (Demo credentials -> admin / admin123)")
-        st.info("💡 **Demo Credentials**: Username: `admin` | Password: `admin123`")
+                    st.error("Authentication failed. Invalid username or password.")
+        st.markdown("<div style='text-align:center; font-family:\"Share Tech Mono\", monospace; color:#94a3b8; font-size:0.82rem; margin-top:16px;'>Default Credentials &mdash; Username: <b style='color:#a855f7;'>admin</b> | Password: <b style='color:#a855f7;'>admin123</b></div>", unsafe_allow_html=True)
     st.stop()
+
 
 
 # ---------------------------------------------------------------------------
@@ -254,11 +627,11 @@ user_info = st.session_state.get("user_info") or {"bank_name": "GraphGuardians B
 st.markdown(f"""
 <div class="bank-header">
     <div>
-        <div class="bank-title">🛡️ GraphGuardians SOC &middot; {user_info['bank_name']}</div>
-        <div style="color:#a8a29e; font-size:0.85rem; margin-top:2px;">Agentic Fraud Ring Detection & Countermeasure Engine</div>
+        <div class="bank-title">GraphGuardians SOC &middot; {user_info['bank_name']}</div>
+        <div style="color:#94a3b8; font-size:0.85rem; margin-top:2px;">Agentic Fraud Ring Detection & Countermeasure Engine</div>
     </div>
     <div class="bank-badge">
-        👤 Officer: {user_info['username']} ({user_info['role']})
+        Officer: {user_info['username']} ({user_info['role']})
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -267,27 +640,27 @@ st.markdown(f"""
 col_nav1, col_nav2, col_nav3, col_nav4 = st.columns([1, 1, 1, 1])
 
 with col_nav1:
-    if st.button("📌 Page 1: Guide & Input Setup", use_container_width=True, type="primary" if st.session_state["current_page"] == "page1" else "secondary"):
+    if st.button("Step 1: Ingestion & Guide", use_container_width=True, type="primary" if st.session_state["current_page"] == "page1" else "secondary"):
         st.session_state["current_page"] = "page1"
         st.rerun()
 
 with col_nav2:
-    if st.button("📊 Page 2: Agent Dashboard", use_container_width=True, type="primary" if st.session_state["current_page"] == "page2" else "secondary"):
+    if st.button("Step 2: Fraud Intelligence Dashboard", use_container_width=True, type="primary" if st.session_state["current_page"] == "page2" else "secondary"):
         st.session_state["current_page"] = "page2"
         st.rerun()
 
 with col_nav3:
-    if st.button("👥 Page 3: About & Audit", use_container_width=True, type="primary" if st.session_state["current_page"] == "page3" else "secondary"):
+    if st.button("Step 3: Audit Trail & Compliance", use_container_width=True, type="primary" if st.session_state["current_page"] == "page3" else "secondary"):
         st.session_state["current_page"] = "page3"
         st.rerun()
 
 with col_nav4:
-    if st.button("🚪 Logout Portal", use_container_width=True):
+    if st.button("Sign Out", use_container_width=True):
         st.session_state["logged_in"] = False
         st.session_state["current_page"] = "login"
         st.rerun()
 
-st.markdown("<hr style='border-color:#44403c; margin:16px 0 24px 0;'>", unsafe_allow_html=True)
+st.markdown("<hr style='border-color:#334155; margin:16px 0 24px 0;'>", unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------------------
@@ -302,7 +675,7 @@ def render_wire_3d_graph(G: nx.DiGraph, flagged_members: set, anomaly_scores: pd
 
     if len(graph_to_render.nodes) == 0:
         fig = go.Figure()
-        fig.update_layout(title=title, paper_bgcolor='#0c0a09', plot_bgcolor='#0c0a09', height=420)
+        fig.update_layout(title=title, paper_bgcolor='#070a13', plot_bgcolor='#070a13', height=420)
         return fig
 
     # Compute 3D Spring Layout with wide node separation
@@ -346,7 +719,7 @@ def render_wire_3d_graph(G: nx.DiGraph, flagged_members: set, anomaly_scores: pd
 
     if len(normal_x) > 0 and not only_fraud:
         normal_trace = go.Scatter3d(
-            x=normal_x, y=normal_y, z=normal_z, mode='markers', name='👤 Normal Timeline Account',
+            x=normal_x, y=normal_y, z=normal_z, mode='markers', name='Standard Account',
             hoverinfo='text', hovertext=normal_txt,
             marker=dict(size=6, color='#38bdf8', symbol='circle', opacity=0.85)
         )
@@ -354,9 +727,9 @@ def render_wire_3d_graph(G: nx.DiGraph, flagged_members: set, anomaly_scores: pd
 
     if len(fraud_x) > 0:
         fraud_trace = go.Scatter3d(
-            x=fraud_x, y=fraud_y, z=fraud_z, mode='markers', name='🚨 Fraud Ring Account',
+            x=fraud_x, y=fraud_y, z=fraud_z, mode='markers', name='High-Risk Fraud Account',
             hoverinfo='text', hovertext=fraud_txt,
-            marker=dict(size=13, color='#ef4444', symbol='diamond', line=dict(width=2, color='#ffffff'))
+            marker=dict(size=13, color='#f43f5e', symbol='diamond', line=dict(width=2, color='#ffffff'))
         )
         data_traces.append(fraud_trace)
 
@@ -373,13 +746,13 @@ def render_wire_3d_graph(G: nx.DiGraph, flagged_members: set, anomaly_scores: pd
                 x=0.01, y=0.99
             ),
             margin=dict(l=0, r=0, b=0, t=40),
-            paper_bgcolor='#0c0a09',
-            plot_bgcolor='#0c0a09',
+            paper_bgcolor='#070a13',
+            plot_bgcolor='#070a13',
             scene=dict(
                 xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                 yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                 zaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                bgcolor='#0c0a09',
+                bgcolor='#070a13',
                 camera=dict(eye=dict(x=1.7, y=1.7, z=1.4))
             ),
             height=580
@@ -397,7 +770,7 @@ def render_wire_2d_graph(G: nx.DiGraph, flagged_members: set, anomaly_scores: pd
 
     if len(graph_to_render.nodes) == 0:
         fig = go.Figure()
-        fig.update_layout(title=title, paper_bgcolor='#0c0a09', plot_bgcolor='#0c0a09', height=420)
+        fig.update_layout(title=title, paper_bgcolor='#070a13', plot_bgcolor='#070a13', height=420)
         return fig
 
     undirected = graph_to_render.to_undirected()
@@ -433,7 +806,7 @@ def render_wire_2d_graph(G: nx.DiGraph, flagged_members: set, anomaly_scores: pd
         labels_norm = [str(n) if len(graph_to_render.nodes) <= 60 else "" for n in normal_nodes]
 
         normal_trace = go.Scatter(
-            x=nx_norm, y=ny_norm, mode='markers+text', name='👤 Normal Account',
+            x=nx_norm, y=ny_norm, mode='markers+text', name='Standard Account',
             hoverinfo='text', hovertext=txt_norm,
             text=labels_norm, textposition="top center",
             textfont=dict(color="#94a3b8", size=9),
@@ -448,11 +821,11 @@ def render_wire_2d_graph(G: nx.DiGraph, flagged_members: set, anomaly_scores: pd
         labels_fraud = [str(n) for n in fraud_nodes]
 
         fraud_trace = go.Scatter(
-            x=fx_fraud, y=fy_fraud, mode='markers+text', name='🚨 Fraud Ring Account',
+            x=fx_fraud, y=fy_fraud, mode='markers+text', name='High-Risk Fraud Account',
             hoverinfo='text', hovertext=txt_fraud,
             text=labels_fraud, textposition="top center",
             textfont=dict(color="#f87171", size=11, family="Share Tech Mono"),
-            marker=dict(size=18, color='#ef4444', symbol='diamond', line=dict(width=2, color='#ffffff'))
+            marker=dict(size=18, color='#f43f5e', symbol='diamond', line=dict(width=2, color='#ffffff'))
         )
         data_traces.append(fraud_trace)
 
@@ -469,8 +842,8 @@ def render_wire_2d_graph(G: nx.DiGraph, flagged_members: set, anomaly_scores: pd
                 x=0.01, y=0.99
             ),
             margin=dict(l=20, r=20, b=20, t=50),
-            paper_bgcolor='#0c0a09',
-            plot_bgcolor='#0c0a09',
+            paper_bgcolor='#070a13',
+            plot_bgcolor='#070a13',
             xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
             yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
             height=580
@@ -480,26 +853,26 @@ def render_wire_2d_graph(G: nx.DiGraph, flagged_members: set, anomaly_scores: pd
 
 
 # ===========================================================================
-# PAGE 1 — LANDING & INPUT DATASET SETUP PAGE
+# PAGE 1 — INGESTION & INPUT DATASET SETUP PAGE
 # ===========================================================================
 if st.session_state["current_page"] == "page1":
-    st.markdown("### 📘 Welcome to GraphGuardians Agentic Fraud Engine")
-    st.markdown("Multi-agent system: **DetectorAgent** $\\rightarrow$ **InvestigatorAgent** $\\rightarrow$ **CountermeasureAgent**.")
+    st.markdown("### Architecture Overview & Pipeline Guide")
+    st.markdown("Multi-Agent Architecture: **DetectorAgent** &rarr; **InvestigatorAgent** &rarr; **CountermeasureAgent**.")
 
     g1, g2 = st.columns(2)
     with g1:
         st.markdown("""
         <div class="guide-card">
             <div class="step-number">01 / STEP</div>
-            <div class="step-title">📤 Input Your Dataset (User CSV Upload)</div>
-            <div class="step-desc">Upload any financial bank transaction CSV dataset. The system auto-detects sender, receiver, and amount columns.</div>
+            <div class="step-title">Upload Financial Transaction Dataset</div>
+            <div class="step-desc">Upload bank transaction CSV dataset. Auto-detects sender, receiver, and transfer amount schema.</div>
         </div>
         """, unsafe_allow_html=True)
 
         st.markdown("""
         <div class="guide-card">
             <div class="step-number">03 / STEP</div>
-            <div class="step-title">🤖 InvestigatorAgent & Risk Tiers</div>
+            <div class="step-title">Investigator Reasoning & Risk Tiering</div>
             <div class="step-desc">Classifies risk severity into tiers (CRITICAL, HIGH, MEDIUM, LOW) with structured feature contribution explanations.</div>
         </div>
         """, unsafe_allow_html=True)
@@ -508,7 +881,7 @@ if st.session_state["current_page"] == "page1":
         st.markdown("""
         <div class="guide-card">
             <div class="step-number">02 / STEP</div>
-            <div class="step-title">🌲 DetectorAgent ML & Graph Core</div>
+            <div class="step-title">Detector Machine Learning Core</div>
             <div class="step-desc">IsolationForest anomaly scoring + Louvain graph modularity algorithms flag colluding money-mule rings.</div>
         </div>
         """, unsafe_allow_html=True)
@@ -516,49 +889,49 @@ if st.session_state["current_page"] == "page1":
         st.markdown("""
         <div class="guide-card">
             <div class="step-number">04 / STEP</div>
-            <div class="step-title">🛡️ CountermeasureAgent Execution</div>
+            <div class="step-title">Autonomous Countermeasure Execution</div>
             <div class="step-desc">Auto-freezes CRITICAL accounts, revokes session tokens, generates downloadable FinCEN SAR reports, and logs human overrides.</div>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("### 🚀 Step 1: Input Dataset Selection & Upload")
+    st.markdown("### Step 1: Input Dataset Selection & Ingestion")
     
-    with st.expander("📥 Upload Custom CSV Dataset or Load Sample Data", expanded=True):
-        st.markdown("##### Choose Your Input Dataset Mode:")
+    with st.expander("Upload Custom CSV Dataset or Load Benchmark Data", expanded=True):
+        st.markdown("##### Select Dataset Source Mode:")
 
         mode_choice = st.radio(
             "Select Data Source Mode:",
-            ["📁 Upload My Own CSV Dataset", "⚡ Use Default PaySim Dataset", "⚡ Synthetic Money Mule Dataset"],
+            ["Upload Custom CSV Dataset", "Default PaySim Financial Dataset", "Synthetic Mule Ring Dataset"],
             horizontal=True
         )
 
         curr_df = st.session_state.get("uploaded_df")
 
-        if mode_choice == "📁 Upload My Own CSV Dataset":
-            uploaded_file = st.file_uploader("Upload Bank Transaction CSV File (.csv)", type=["csv"])
+        if mode_choice == "Upload Custom CSV Dataset":
+            uploaded_file = st.file_uploader("Upload Bank Transaction File (.csv)", type=["csv"])
             if uploaded_file is not None:
                 try:
                     curr_df = pd.read_csv(uploaded_file)
                     st.session_state["uploaded_df"] = curr_df
-                    st.success(f"✅ Successfully loaded custom CSV: **{uploaded_file.name}** ({len(curr_df):,} rows)")
+                    st.success(f"Successfully loaded dataset: {uploaded_file.name} ({len(curr_df):,} rows)")
                 except Exception as e:
-                    st.error(f"⚠️ Error parsing CSV file: {e}")
+                    st.error(f"Error parsing CSV file: {e}")
 
-        elif mode_choice == "⚡ Use Default PaySim Dataset":
+        elif mode_choice == "Default PaySim Financial Dataset":
             curr_df = load_transactions()
             st.session_state["uploaded_df"] = curr_df
-            st.info(f"ℹ️ Loaded PaySim Dataset ({len(curr_df):,} transactions)")
+            st.info(f"Loaded PaySim Dataset ({len(curr_df):,} transactions)")
 
-        elif mode_choice == "⚡ Synthetic Money Mule Dataset":
+        elif mode_choice == "Synthetic Mule Ring Dataset":
             curr_df = load_transactions(n_synthetic=2500)
             st.session_state["uploaded_df"] = curr_df
-            st.info(f"ℹ️ Loaded Synthetic Mule Ring Dataset ({len(curr_df):,} transactions)")
+            st.info(f"Loaded Synthetic Mule Ring Dataset ({len(curr_df):,} transactions)")
 
         # Display Dataset Summary & Auto-Detected Schema
         if curr_df is not None:
             st.markdown("---")
-            st.markdown("##### 🔍 Uploaded Dataset Summary & Auto-Detected Columns:")
+            st.markdown("##### Ingested Dataset Metrics & Auto-Detected Schema:")
 
             orig_col, dest_col, amt_col = detect_transaction_columns(curr_df)
 
@@ -578,13 +951,13 @@ if st.session_state["current_page"] == "page1":
                 except Exception:
                     st.metric("Total Volume Moved", "N/A")
 
-            st.caption(f"**Auto-Detected Schema**: Sender Column = `{orig_col}` | Receiver Column = `{dest_col}` | Amount Column = `{amt_col}`")
+            st.caption(f"Auto-Detected Schema: Sender = `{orig_col}` | Receiver = `{dest_col}` | Amount = `{amt_col}`")
 
-            with st.expander("👀 View First 5 Rows of Input Dataset"):
+            with st.expander("Inspect Dataset Sample (First 5 Rows)"):
                 st.dataframe(curr_df.head(5), use_container_width=True)
 
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("🚀 Run Fraud Ring Detection on This Input Dataset", type="primary", use_container_width=True):
+            if st.button("Initiate Fraud Detection Pipeline", type="primary", use_container_width=True):
                 st.session_state["current_page"] = "page2"
                 st.session_state["trigger_analysis"] = True
                 st.rerun()
@@ -601,12 +974,12 @@ elif st.session_state["current_page"] == "page2":
         st.session_state["uploaded_df"] = df
 
     # SIDEBAR CONTROLS
-    st.sidebar.header("⚙️ Agent Controls")
+    st.sidebar.header("Agent Parameters")
     risk_threshold = st.sidebar.slider("Risk Cutoff Threshold", 0.20, 0.90, 0.55, step=0.05)
     contamination = st.sidebar.slider("IsolationForest Contamination", 0.01, 0.25, 0.10, step=0.01)
 
     st.sidebar.markdown("---")
-    st.sidebar.markdown("##### 📂 Change Input Dataset")
+    st.sidebar.markdown("##### Ingest New Dataset")
     sidebar_file = st.sidebar.file_uploader("Upload New Dataset (.csv)", type=["csv"], key="sidebar_csv")
     if sidebar_file is not None:
         try:
@@ -617,25 +990,25 @@ elif st.session_state["current_page"] == "page2":
             st.sidebar.error(f"Upload error: {e}")
 
     # Live Stream Feed Simulation Mode Toggle
-    simulate_live = st.sidebar.toggle("⚡ Simulate Live Stream Feed Mode", value=False)
+    simulate_live = st.sidebar.toggle("Simulate Live Stream Feed Mode", value=False)
 
     st.sidebar.markdown("---")
-    run_pipeline_btn = st.sidebar.button("🚀 Re-Run Fraud Ring Engine", type="primary", use_container_width=True)
+    run_pipeline_btn = st.sidebar.button("Re-Run Fraud Engine", type="primary", use_container_width=True)
 
     if run_pipeline_btn:
         st.session_state["trigger_analysis"] = True
 
     # TRIGGER AGENTIC PIPELINE EXECUTION ON THE USER INPUT DATASET
     if st.session_state.get("trigger_analysis", False):
-        st.markdown("### ⚡ Analyzing Input Dataset with Multi-Agent Reasoning...")
+        st.markdown("### Processing Transaction Network Graph...")
         progress_bar = st.progress(0)
         status_text = st.empty()
 
         steps = [
-            ("🌐 Step 1/4 DetectorAgent: Parsing user input dataset & mapping transaction graph...", 25),
-            ("🌲 Step 2/4 DetectorAgent: Computing IsolationForest & Louvain graph community scores...", 50),
-            ("🤖 Step 3/4 InvestigatorAgent: Evaluating feature contributions & risk tier classification...", 75),
-            ("🛡️ Step 4/4 CountermeasureAgent: Enacting auto-freezes, token revocations, and FinCEN SAR drafts...", 100),
+            ("Step 1/4 DetectorAgent: Parsing transaction dataset & mapping graph topology...", 25),
+            ("Step 2/4 DetectorAgent: Computing IsolationForest & Louvain graph community scores...", 50),
+            ("Step 3/4 InvestigatorAgent: Evaluating feature attributions & risk severity classification...", 75),
+            ("Step 4/4 CountermeasureAgent: Executing auto-freezes, token revocations, and SAR drafts...", 100),
         ]
 
         for msg, val in steps:
@@ -658,8 +1031,8 @@ elif st.session_state["current_page"] == "page2":
 
     # IF PIPELINE NOT RUN YET
     if "agent_results" not in st.session_state:
-        st.info("📥 Dataset loaded! Click **'🚀 Run Fraud Ring Detection'** below to analyze this dataset.")
-        if st.button("🚀 Run Fraud Ring Detection Now", type="primary", use_container_width=True):
+        st.info("Dataset loaded. Click 'Initiate Fraud Detection Pipeline' below to execute analysis.")
+        if st.button("Initiate Fraud Detection Pipeline", type="primary", use_container_width=True):
             st.session_state["trigger_analysis"] = True
             st.rerun()
         st.stop()
@@ -675,10 +1048,10 @@ elif st.session_state["current_page"] == "page2":
 
     # LIVE STREAM SIMULATION
     if simulate_live:
-        st.info("⚡ Live Stream Feed Simulation Active: Replaying transaction stream...")
+        st.info("Live Stream Feed Active: Replaying streaming transaction feed...")
 
     # DATABASE CONFIRMATION BADGE
-    st.markdown(f'<div class="db-badge">✅ Fraud Engine Output Saved to SQLite Database (Batch #{batch_id})</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="db-badge">State Persisted to SQLite Database (Batch #{batch_id})</div>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------------------------
     # TOP KPI STRIP (TOTAL SCAM AMOUNT & ACCOUNTS TO FREEZE FROM USER DATASET)
@@ -721,27 +1094,27 @@ elif st.session_state["current_page"] == "page2":
     c_left, c_right = st.columns([1.45, 1.0])
 
     with c_left:
-        st.markdown("#### 🌐 Transaction Network Topology Graphs (User Dataset)")
+        st.markdown("#### Transaction Network Topology Visualizer")
         
         # Dual View Mode Selector (3D Wire View vs 2D High-Contrast View)
-        view_tab = st.radio("Select Graph View Mode:", ["🌐 3D Fiber-Optic Wire View", "🗺️ 2D High-Contrast Interactive View"], horizontal=True)
+        view_tab = st.radio("Select Visualization Mode:", ["3D Fiber-Optic Wire View", "2D High-Contrast Interactive View"], horizontal=True)
 
         if "3D" in view_tab:
             st.markdown("##### 1. Overall Account Network Topology (All Accounts)")
-            st.caption("Hover over nodes for anomaly scores & key suspicion metrics")
+            st.caption("Hover over nodes for anomaly scores & key behavioral attribution metrics")
             fig_overall = render_wire_3d_graph(
                 G, flagged_members, anomaly_scores, feature_contributions,
-                title="🌐 Overall Account Network Topology (3D Wire View)", only_fraud=False
+                title="Overall Account Network Topology (3D Wire View)", only_fraud=False
             )
             st.plotly_chart(fig_overall, use_container_width=True)
 
             st.markdown("<br>", unsafe_allow_html=True)
 
             st.markdown("##### 2. Isolated High-Risk Fraud Accounts Subgraph")
-            st.caption("Plotting ONLY the flagged fraud ring accounts in the user dataset")
+            st.caption("Plotting target fraud ring accounts in the active dataset")
             fig_fraud = render_wire_3d_graph(
                 G, flagged_members, anomaly_scores, feature_contributions,
-                title="🎯 High-Risk Fraud Accounts Subgraph (3D View)", only_fraud=True
+                title="High-Risk Fraud Accounts Subgraph (3D View)", only_fraud=True
             )
             st.plotly_chart(fig_fraud, use_container_width=True)
 
@@ -750,30 +1123,30 @@ elif st.session_state["current_page"] == "page2":
             st.caption("High-contrast node layout with account labels on hover & zoom")
             fig_overall_2d = render_wire_2d_graph(
                 G, flagged_members, anomaly_scores, feature_contributions,
-                title="🗺️ Overall Account Network Topology (2D View)", only_fraud=False
+                title="Overall Account Network Topology (2D View)", only_fraud=False
             )
             st.plotly_chart(fig_overall_2d, use_container_width=True)
 
             st.markdown("<br>", unsafe_allow_html=True)
 
             st.markdown("##### 2. Isolated High-Risk Fraud Accounts Subgraph (2D View)")
-            st.caption("High-contrast subgraph of flagged fraud ring accounts")
+            st.caption("High-contrast subgraph of target fraud ring accounts")
             fig_fraud_2d = render_wire_2d_graph(
                 G, flagged_members, anomaly_scores, feature_contributions,
-                title="🎯 High-Risk Fraud Accounts Subgraph (2D View)", only_fraud=True
+                title="High-Risk Fraud Accounts Subgraph (2D View)", only_fraud=True
             )
             st.plotly_chart(fig_fraud_2d, use_container_width=True)
 
     with c_right:
         # AGENT ACTIONS & ACCOUNT FREEZE PANEL
-        st.markdown("#### 🛡️ Agent Actions & Account Freeze Panel")
-        st.caption("Actions strictly generated for the target accounts in your uploaded dataset")
+        st.markdown("#### Agent Actions & Account Protection Panel")
+        st.caption("Proactive countermeasures generated for accounts in current dataset")
 
         if flagged_count > 0:
             # Download Full Risk CSV Report Button
             csv_data = community_report.to_csv(index=False)
             st.download_button(
-                label="📊 Export Full Community Risk CSV Report",
+                label="Export Community Risk Report (.CSV)",
                 data=csv_data,
                 file_name="Fraud_Community_Risk_Report.csv",
                 mime="text/csv",
@@ -795,10 +1168,10 @@ elif st.session_state["current_page"] == "page2":
                         <strong style="font-size:1.05rem;">Fraud Ring #{r_id} ({r_data['size']} Accounts)</strong>
                         <span class="tier-badge tier-{tier}">{tier} SEVERITY</span>
                     </div>
-                    <p style="font-size:0.85rem; color:#d6d3d1; margin-bottom:6px;"><b>Scammed Amount:</b> ₹{r_data['total_amount_moved']:,.2f}</p>
+                    <p style="font-size:0.85rem; color:#d6d3d1; margin-bottom:6px;"><b>Total Volume:</b> ₹{r_data['total_amount_moved']:,.2f}</p>
                     <p style="font-size:0.85rem; color:#d6d3d1; margin-bottom:8px;"><b>Investigator Reasoning:</b> {reasoning}</p>
-                    <p style="font-size:0.82rem; color:#ef4444; margin-bottom:8px; font-family:Share Tech Mono, monospace;"><b>❄️ Freeze Target Accounts:</b><br>{target_accs_str}</p>
-                    <div style="font-size:0.8rem; color:#a8a29e; margin-bottom:10px;">
+                    <p style="font-size:0.82rem; color:#f43f5e; margin-bottom:8px; font-family:Share Tech Mono, monospace;"><b>Target Accounts to Freeze:</b><br>{target_accs_str}</p>
+                    <div style="font-size:0.8rem; color:#94a3b8; margin-bottom:10px;">
                         • Executed Actions: {len(cm['executed_actions'])} | Pending Approval: {len(cm['pending_actions'])}
                     </div>
                 </div>
@@ -809,7 +1182,7 @@ elif st.session_state["current_page"] == "page2":
                 ring_actions = [a for a in db_actions if a["ring_id"] == r_id]
 
                 if ring_actions:
-                    with st.expander(f"⚙️ Manage Freeze Overrides for Ring #{r_id}"):
+                    with st.expander(f"Manage Actions & Overrides (Ring #{r_id})"):
                         for act in ring_actions:
                             act_id = act["id"]
                             status = act["status"]
@@ -821,16 +1194,16 @@ elif st.session_state["current_page"] == "page2":
                             b_col1, b_col2 = st.columns(2)
                             with b_col1:
                                 if status == "PENDING_APPROVAL":
-                                    if st.button(f"✅ Freeze / Approve {acc_id}", key=f"app_{act_id}"):
+                                    if st.button(f"Enforce Account Freeze ({acc_id})", key=f"app_{act_id}"):
                                         db.approve_pending_action(act_id, approved_by=user_info["username"])
-                                        st.success(f"Frozen account {acc_id}!")
+                                        st.success(f"Enforced account freeze for {acc_id}")
                                         st.rerun()
                             with b_col2:
                                 if status in ["EXECUTED", "PENDING_APPROVAL"]:
-                                    if st.button(f"↺ Reverse / Unfreeze", key=f"rev_{act_id}"):
+                                    if st.button(f"Reverse Action / Unfreeze", key=f"rev_{act_id}"):
                                         db.reverse_action(act_id, approved_by=user_info["username"])
                                         countermeasures.unfreeze_account(acc_id, approved_by=user_info["username"])
-                                        st.warning(f"Unfrozen account {acc_id}!")
+                                        st.warning(f"Reversed freeze for {acc_id}")
                                         st.rerun()
 
                 # DOWNLOAD SAR REPORT BUTTON FOR THIS SPECIFIC RING IN USER DATASET
@@ -839,7 +1212,7 @@ elif st.session_state["current_page"] == "page2":
                     with open(sar_path, "r", encoding="utf-8") as f:
                         sar_text = f.read()
                     st.download_button(
-                        label=f"📥 Download FinCEN SAR Report (Ring #{r_id})",
+                        label=f"Export FinCEN SAR Regulatory Filing (Ring #{r_id})",
                         data=sar_text,
                         file_name=f"FinCEN_SAR_Report_Ring_{r_id}.txt",
                         mime="text/plain",
@@ -848,32 +1221,31 @@ elif st.session_state["current_page"] == "page2":
                 st.markdown("<br>", unsafe_allow_html=True)
 
         else:
-            st.success("✅ Security Status Clean: No fraud rings detected in this dataset.")
+            st.success("Security Status Clean: No fraud rings detected in current dataset.")
 
 
 # ===========================================================================
 # PAGE 3 — ABOUT & AUDIT TRAIL PAGE
 # ===========================================================================
 elif st.session_state["current_page"] == "page3":
-    st.markdown("### 👥 About GraphGuardians & Audit Trail")
-    st.markdown("GraphGuardians is an Agentic Fraud Ring Detection & Countermeasure Engine.")
+    st.markdown("### System Architecture & Audit Trail")
+    st.markdown("GraphGuardians Enterprise Fraud Intelligence Engine.")
 
-    st.markdown("#### 🎯 Mission Statement")
+    st.markdown("#### Mission & Design Principles")
     st.info("""
-    **Our Mission**: Traditional rules-based fraud detection fails against modern money-mule syndicates. 
+    **Core Objective**: Traditional rules-based fraud engines fail against modern colluding money-mule networks. 
     By combining **Unsupervised Machine Learning (IsolationForest)** with **Graph Modularity Analytics (Louvain Algorithm)**, 
-    **Multi-Agent Reasoning (Detector -> Investigator -> Countermeasure)**, and **Real State Persistence**, 
-    GraphGuardians empowers financial institutions to detect, isolate, and neutralize complex fraud networks in real-time.
+    **Multi-Agent Reasoning (Detector &rarr; Investigator &rarr; Countermeasure)**, and **Real State Persistence**, 
+    GraphGuardians empowers financial security operations teams to isolate and neutralize complex fraud networks in real time.
     """)
 
     st.markdown("---")
-    st.markdown("#### 👨‍💻 Team Behind GraphGuardians")
+    st.markdown("#### Engineering Team")
 
     t1, t2, t3 = st.columns(3)
     with t1:
         st.markdown("""
         <div class="guide-card" style="text-align:center;">
-            <div style="font-size:3rem; margin-bottom:10px;">👤</div>
             <div class="step-title">Lead AI / ML Engineer</div>
             <div class="step-desc">Designed IsolationForest Anomaly Engine, Feature Attribution, & Louvain Graph Analytics.</div>
         </div>
@@ -882,7 +1254,6 @@ elif st.session_state["current_page"] == "page3":
     with t2:
         st.markdown("""
         <div class="guide-card" style="text-align:center;">
-            <div style="font-size:3rem; margin-bottom:10px;">🛡️</div>
             <div class="step-title">Countermeasure Architecture Lead</div>
             <div class="step-desc">Architected Countermeasure Engine, SQLite Persistence, and Human Override Controls.</div>
         </div>
@@ -891,14 +1262,13 @@ elif st.session_state["current_page"] == "page3":
     with t3:
         st.markdown("""
         <div class="guide-card" style="text-align:center;">
-            <div style="font-size:3rem; margin-bottom:10px;">🤖</div>
             <div class="step-title">Multi-Agent Pipeline Lead</div>
             <div class="step-desc">Orchestrated DetectorAgent, InvestigatorAgent, and CountermeasureAgent reasoning chain.</div>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.markdown("#### 💾 SQLite Countermeasure Actions Audit Trail")
+    st.markdown("#### SQLite Countermeasure Actions Audit Log")
     
     conn = db.get_db_connection()
     cursor = conn.cursor()
@@ -911,7 +1281,7 @@ elif st.session_state["current_page"] == "page3":
     else:
         st.caption("No countermeasure actions logged in SQLite database yet.")
 
-    st.markdown("#### 💾 SQLite Analysis Batches Audit Trail")
+    st.markdown("#### SQLite Analysis Batches Audit Log")
     recent_records = db.fetch_latest_records(5)
     if recent_records:
         st.dataframe(pd.DataFrame(recent_records), use_container_width=True)
